@@ -4,4 +4,4 @@
 
 배포: http://april0ys.dothome.co.kr/boardgame-codenames/
 
-![Uploading ezgif-2-eb3d4d1a14.gif…]()
+![Uploading readme.gif…]()
