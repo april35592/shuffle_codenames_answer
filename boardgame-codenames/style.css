@@ -90,9 +90,9 @@ body {
 }
 
 @media (max-width: 502px) {
-  div.container {
+  div#container {
     margin: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
   }
 
