@@ -1,52 +1,69 @@
-const shuffleBtn = document.getElementById("shuffle");
-const tableList = document.getElementsByClassName("table");
-const container = document.getElementById("container");
-const header = document.getElementById("header");
+//주요 node들을
+const shuffleBtn = document.querySelector("#shuffle");
+const tableList = document.querySelectorAll(".table");
+const container = document.querySelector("#container");
+const header = document.querySelector("#header");
 
-const codenames = {
-  size: tableList.length,
-  team: {
-    spy: -1,
-    redAgent: 1,
-    blueAgent: 2,
-    citizen: 0,
-    doubleAgent: {
-      value: 0,
-      shuffle() {
-        codenames.team.doubleAgent.value = randomOneTwo();
-      },
+//해당 프로그램의 핵심인 codenames의 데이터를 관리하는 클래스입니다.
+
+function codenames() {
+  const size = tableList.length;
+  const spy = -1;
+  const redAgent = 1;
+  const blueAgent = 2;
+  const citizen = 0;
+  const doubleAgent = {
+    value: 0,
+    shuffle: () => {
+      this.value = randomOneTwo();
+      return this.value;
     },
-  },
-  array: {
+  };
+
+  const array = {
     value: [],
     setting: () => {
-      codenames.array.value = [
-        ...pushArr(codenames.team.spy, 1),
-        ...pushArr(codenames.team.doubleAgent.value, 1),
-        ...pushArr(codenames.team.redAgent, 7),
-        ...pushArr(codenames.team.blueAgent, 7),
-        ...pushArr(codenames.team.citizen, codenames.size - 16),
+      value = [
+        ...pushArr(spy, 1),
+        ...pushArr(doubleAgent.value, 1),
+        ...pushArr(redAgent, 7),
+        ...pushArr(blueAgent, 7),
+        ...pushArr(citizen, size - 16),
       ];
     },
     shuffle: () => {
-      codenames.array.setting();
-      codenames.array.value = arrayShuffle(codenames.array.value);
-      return codenames.array.value;
+      array.setting();
+      value = arrayShuffle(value);
+      return value;
     },
-  },
-  shuffle: () => {
-    codenames.team.doubleAgent.shuffle();
-    return codenames.array.shuffle();
-  },
-};
+  };
 
+  return {
+    size: size,
+    spy: spy,
+    redAgent: redAgent,
+    blueAgent: blueAgent,
+    citizen: citizen,
+    doubleAgent: doubleAgent.value,
+
+    shuffle: function () {
+      this.doubleAgent = doubleAgent.shuffle();
+      return array.shuffle();
+    },
+  };
+}
+
+const game = codenames();
+
+//shuffle버튼의 클릭을 감지합니다.
 shuffleBtn.addEventListener("click", clickShuffle);
 
 function clickShuffle() {
-  paintTable(codenames.shuffle());
-  sirenFirstTurn(codenames.team.doubleAgent.value);
+  paintTable(game.shuffle());
+  sirenFirstTurn(game.doubleAgent);
 }
 
+//정렬 내에 agent를 number만큼 반복 삽입합니다.
 function pushArr(agent, number) {
   const array = [];
   for (let i = 0; i < number; i++) {
@@ -55,10 +72,12 @@ function pushArr(agent, number) {
   return array;
 }
 
+//1 또는 2를 랜덤 출력합니다.
 function randomOneTwo() {
   return Math.floor(Math.random() * 2) + 1;
 }
 
+//피셔-예이츠 셔플 방법을 이용해 array를 랜덤 셔플합니다.
 function arrayShuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const randomPosition = Math.floor(Math.random() * (i + 1));
@@ -69,13 +88,14 @@ function arrayShuffle(array) {
   return array;
 }
 
+//whoIs(doubleAgent)의 값이 redAgent/blueAgent인지 확인 후 화면에 강조 표시를 띄웁니다.
 function sirenFirstTurn(whoIs) {
-  if (whoIs === codenames.team.redAgent) {
+  if (whoIs === game.redAgent) {
     container.classList.remove("blue");
     container.classList.add("red");
     header.classList.remove("blue");
     header.classList.add("red");
-  } else {
+  } else if (whoIs === game.blueAgent) {
     container.classList.remove("red");
     container.classList.add("blue");
     header.classList.remove("red");
@@ -83,14 +103,15 @@ function sirenFirstTurn(whoIs) {
   }
 }
 
+//화면의 table을 array내 값에 따라 색칠합니다.
 function paintTable(array) {
-  for (let i = 0; i < tableList.length; i++) {
+  for (let i = 0; i < game.size; i++) {
     tableList.item(i).classList.remove("spy", "red", "blue");
-    if (array[i] === codenames.team.spy) {
+    if (array[i] === game.spy) {
       tableList.item(i).classList.add("spy");
-    } else if (array[i] === codenames.team.redAgent) {
+    } else if (array[i] === game.redAgent) {
       tableList.item(i).classList.add("red");
-    } else if (array[i] === codenames.team.blueAgent) {
+    } else if (array[i] === game.blueAgent) {
       tableList.item(i).classList.add("blue");
     }
   }

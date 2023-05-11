@@ -9,10 +9,6 @@
   color: black;
 }
 
-body {
-  background-color: lightgrey;
-}
-
 #container {
   width: 502px;
   height: 100vh;
@@ -24,11 +20,11 @@ body {
 }
 
 #container.red {
-  box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 20px 10px rgba(251, 54, 64, 0.5);
 }
 
 #container.blue {
-  box-shadow: 0 0 20px 10px rgba(0, 0, 255, 0.5);
+  box-shadow: 0 0 20px 10px rgba(9, 102, 164, 0.5);
 }
 
 #header {
@@ -42,11 +38,11 @@ body {
 }
 
 #header.red {
-  color: red;
+  color: #fb3640;
 }
 
 #header.blue {
-  color: blue;
+  color: #0966a4;
 }
 
 .box {
@@ -69,11 +65,11 @@ body {
 }
 
 .table.red {
-  background-color: red;
+  background-color: #fb3640;
 }
 
 .table.blue {
-  background-color: blue;
+  background-color: #0966a4;
 }
 
 .table.spy {
