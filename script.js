@@ -4,62 +4,54 @@ const tableList = document.querySelectorAll(".table");
 const container = document.querySelector("#container");
 const header = document.querySelector("#header");
 
-//해당 프로그램의 핵심인 codenames의 데이터를 관리하는 클래스입니다.
+//해당 프로그램의 핵심인 codenames의 데이터를 저장, 수정하는 클래스입니다.
+class Codenames {
+  constructor(size) {
+    this.size = size;
+    this.spy = -1;
+    this.redAgent = 1;
+    this.blueAgent = 2;
+    this.citizen = 0;
+    this.doubleAgent = 0;
 
-function codenames() {
-  const size = tableList.length;
-  const spy = -1;
-  const redAgent = 1;
-  const blueAgent = 2;
-  const citizen = 0;
-  const doubleAgent = {
-    value: 0,
-    shuffle: () => {
-      this.value = randomOneTwo();
-      return this.value;
-    },
-  };
+    this.table = [];
+  }
 
-  const array = {
-    value: [],
-    setting: () => {
-      value = [
-        ...pushArr(spy, 1),
-        ...pushArr(doubleAgent.value, 1),
-        ...pushArr(redAgent, 7),
-        ...pushArr(blueAgent, 7),
-        ...pushArr(citizen, size - 16),
-      ];
-    },
-    shuffle: () => {
-      array.setting();
-      value = arrayShuffle(value);
-      return value;
-    },
-  };
+  doubleAgentShuffle() {
+    this.doubleAgent = randomOneTwo();
+    return this.doubleAgent;
+  }
 
-  return {
-    size: size,
-    spy: spy,
-    redAgent: redAgent,
-    blueAgent: blueAgent,
-    citizen: citizen,
-    doubleAgent: doubleAgent.value,
+  tableSetting() {
+    this.table = [
+      ...pushArr(this.spy, 1),
+      ...pushArr(this.doubleAgent, 1),
+      ...pushArr(this.redAgent, 7),
+      ...pushArr(this.blueAgent, 7),
+      ...pushArr(this.citizen, this.size - 16),
+    ];
+  }
 
-    shuffle: function () {
-      this.doubleAgent = doubleAgent.shuffle();
-      return array.shuffle();
-    },
-  };
+  tableShuffle() {
+    this.tableSetting();
+    this.table = arrayShuffle(this.table);
+    return this.talbe;
+  }
+
+  shuffle() {
+    this.doubleAgentShuffle();
+    return this.tableShuffle();
+  }
 }
 
-const game = codenames();
+const game = new Codenames(tableList.length);
 
 //shuffle버튼의 클릭을 감지합니다.
 shuffleBtn.addEventListener("click", clickShuffle);
 
 function clickShuffle() {
-  paintTable(game.shuffle());
+  game.shuffle();
+  paintTable(game.table);
   sirenFirstTurn(game.doubleAgent);
 }
 
