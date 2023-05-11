@@ -35,7 +35,7 @@ class Codenames {
   tableShuffle() {
     this.tableSetting();
     this.table = arrayShuffle(this.table);
-    return this.talbe;
+    return this.table;
   }
 
   shuffle() {
@@ -50,8 +50,7 @@ const game = new Codenames(tableList.length);
 shuffleBtn.addEventListener("click", clickShuffle);
 
 function clickShuffle() {
-  game.shuffle();
-  paintTable(game.table);
+  paintTable(game.shuffle());
   sirenFirstTurn(game.doubleAgent);
 }
 
