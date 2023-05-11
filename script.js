@@ -4,38 +4,63 @@ const tableList = document.querySelectorAll(".table");
 const container = document.querySelector("#container");
 const header = document.querySelector("#header");
 
-//해당 프로그램의 핵심인 codenames의 데이터를 저장, 수정하는 클래스입니다.
+//해당 프로그램의 핵심인 codenames의 데이터를 관리하는 클래스입니다.
 class Codenames {
-  constructor(size) {
-    this.size = size;
-    this.spy = -1;
-    this.redAgent = 1;
-    this.blueAgent = 2;
-    this.citizen = 0;
-    this.doubleAgent = 0;
+  #size = tableList.length;
+  #spy = -1;
+  #redAgent = 1;
+  #blueAgent = 2;
+  #citizen = 0;
+  #doubleAgent = 0;
+  #table = [];
 
-    this.table = [];
+  get size() {
+    return this.#size;
+  }
+
+  get spy() {
+    return this.#spy;
+  }
+
+  get redAgent() {
+    return this.#redAgent;
+  }
+
+  get blueAgent() {
+    return this.#blueAgent;
+  }
+
+  get citizen() {
+    return this.#citizen;
+  }
+
+  get doubleAgent() {
+    return this.#doubleAgent;
+  }
+
+  get table() {
+    return this.#table;
   }
 
   doubleAgentShuffle() {
-    this.doubleAgent = randomOneTwo();
-    return this.doubleAgent;
+    this.#doubleAgent = randomOneTwo();
+    return this.#doubleAgent;
   }
 
   tableSetting() {
-    this.table = [
-      ...pushArr(this.spy, 1),
-      ...pushArr(this.doubleAgent, 1),
-      ...pushArr(this.redAgent, 7),
-      ...pushArr(this.blueAgent, 7),
-      ...pushArr(this.citizen, this.size - 16),
+    this.#table = [
+      ...pushArr(this.#spy, 1),
+      ...pushArr(this.#doubleAgent, 1),
+      ...pushArr(this.#redAgent, 7),
+      ...pushArr(this.#blueAgent, 7),
+      ...pushArr(this.#citizen, this.#size - 16),
     ];
+    return this.#table;
   }
 
   tableShuffle() {
-    this.tableSetting();
-    this.table = arrayShuffle(this.table);
-    return this.table;
+    this.#table = arrayShuffle(this.tableSetting());
+    return this.#table;
   }
 
   shuffle() {
@@ -44,7 +69,65 @@ class Codenames {
   }
 }
 
-const game = new Codenames(tableList.length);
+// // 아래는 ES5 문법으로 짠 코드입니다.
+// function Codenames() {
+//   const size = tableList.length;
+//   const spy = -1;
+//   const redAgent = 1;
+//   const blueAgent = 2;
+//   const citizen = 0;
+//   let doubleAgent = 0;
+//   let table = [];
+
+//   return {
+//     size: function () {
+//       return size;
+//     },
+//     spy: function () {
+//       return spy;
+//     },
+//     redAgent: function () {
+//       return redAgent;
+//     },
+//     blueAgent: function () {
+//       return blueAgent;
+//     },
+//     citizen: function () {
+//       return citizen;
+//     },
+//     doubleAgent: function () {
+//       return doubleAgent;
+//     },
+//     table: function () {
+//       return table;
+//     },
+//     doubleAgentShuffle: function () {
+//       doubleAgent = randomOneTwo();
+//       return doubleAgent;
+//     },
+//     tableSetting: function () {
+//       table = [
+//         ...pushArr(spy, 1),
+//         ...pushArr(doubleAgent, 1),
+//         ...pushArr(redAgent, 7),
+//         ...pushArr(blueAgent, 7),
+//         ...pushArr(citizen, size - 16),
+//       ];
+//       return table;
+//     },
+
+//     tableShuffle: function () {
+//       table = arrayShuffle(this.tableSetting());
+//       return table;
+//     },
+//     shuffle: function () {
+//       doubleAgent = this.doubleAgentShuffle();
+//       return this.tableShuffle();
+//     },
+//   };
+// }
+
+const game = new Codenames();
 
 //shuffle버튼의 클릭을 감지합니다.
 shuffleBtn.addEventListener("click", clickShuffle);
