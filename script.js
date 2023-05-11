@@ -1,4 +1,4 @@
-//주요 node들을
+//주요 node들을 불러옵니다.
 const shuffleBtn = document.querySelector("#shuffle");
 const tableList = document.querySelectorAll(".table");
 const container = document.querySelector("#container");
